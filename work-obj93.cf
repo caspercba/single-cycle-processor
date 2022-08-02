@@ -1,0 +1,10 @@
+v 4
+file . "full_adder.vhd" "bcdce63e3b8732d35fa9895421e35365c5202637" "20220801123131.799":
+  entity full_adder at 1( 0) + 0 on 35;
+  architecture a of full_adder at 15( 251) + 0 on 36;
+file . "ALU.vhd" "61ec0ae977441e678c26f7d650e4ce0bc339fc47" "20220801123131.801":
+  entity alu at 2( 1) + 0 on 37;
+  architecture dataflow of alu at 18( 475) + 0 on 38;
+file . "adder.vhd" "0fd92f1bab132a4647cb77553e2dbc5804b9e381" "20220801123131.798":
+  entity adder at 1( 0) + 0 on 33;
+  architecture structural of adder at 14( 359) + 0 on 34;
