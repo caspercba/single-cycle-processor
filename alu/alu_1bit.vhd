@@ -16,11 +16,14 @@ entity alu_1bit is
 end alu_1bit;
 
 architecture dataflow_z80 of alu_1bit is
-  signal c_m3 : std_logic;
+  signal c_m3           : std_logic;
+  signal c_out_s        :std_logic;
+  
   begin
-    c_m3 <= not (c and m3);
-    c_out <= not ((((not a) and (not b)) or c_m3) and ((not a) or (not b)) and m1);
-    result <= not ((c_out and m2) or (((not a) and (not b)) and c_m3) and ((c_m3 and m1) or ((not a) or (not b))));
+    c_m3 <= not (c_in and m3);
+    c_out_s <= not ((((not a) and (not b)) or c_m3) and ((not a) or (not b)) and m1);
+    result <= not (((c_out_s and m2) or (((not a) and (not b)) and c_m3)) and ((c_m3 and m1) or ((not a) or (not b))));
+    c_out <= c_out_s;
   end architecture dataflow_z80;
 
     
