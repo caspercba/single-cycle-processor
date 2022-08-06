@@ -22,12 +22,12 @@ all:
 #lst2test:
 #	gcc test_vectors/lst2test.c -o test_vectors/lst2test
 
-cpu_test_vector_files: lst2test
-	cd test_vectors; ./lst2test < alu_test_part1.lss > alu_test_part1_tv.txt
-	cd test_vectors; ./lst2test < alu_test_part2.lss > alu_test_part2_tv.txt
-	cd test_vectors; ./lst2test < data_move_test.lss > data_move_test_tv.txt
-	cd test_vectors; ./lst2test < flow_skip.lss > flow_skip_tv.txt
-	cd test_vectors; ./lst2test < flow_cond_branch.lss > flow_cond_branch_tv.txt
+#cpu_test_vector_files: lst2test
+#	cd test_vectors; ./lst2test < alu_test_part1.lss > alu_test_part1_tv.txt
+#	cd test_vectors; ./lst2test < alu_test_part2.lss > alu_test_part2_tv.txt
+#	cd test_vectors; ./lst2test < data_move_test.lss > data_move_test_tv.txt
+#	cd test_vectors; ./lst2test < flow_skip.lss > flow_skip_tv.txt
+#	cd test_vectors; ./lst2test < flow_cond_branch.lss > flow_cond_branch_tv.txt
 # 	cd test_vectors; ./lst2test < flow_uncond_branch.lss > flow_uncond_branch_tv.txt
 
 import: clean
