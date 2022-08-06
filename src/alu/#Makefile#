@@ -1,0 +1,3 @@
+GHDL=ghdl
+GHDL_FLAGS= --eee=synopsys
+FILES=source/*

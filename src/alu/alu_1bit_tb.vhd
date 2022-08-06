@@ -8,10 +8,10 @@ use IEEE.numeric_std.all;
 use std.textio.all;
 -- use ieee.std_logic_textio.all;
 
-entity alu_1bit_test is
+entity alu_1bit_tb is
   end;
 
-architecture test of alu_1bit_test is
+architecture test of alu_1bit_tb is
 
 
 component alu_1bit
@@ -50,7 +50,7 @@ begin
 
     begin
       a <= '1';
-      b <= '1';
+      b <= '0';
       c_in <= '0';
       m1 <= '1';
       m2 <= '1';
