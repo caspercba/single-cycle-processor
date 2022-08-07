@@ -10,7 +10,7 @@ GHDL_FLAGS=--std=08 --workdir=$(WORK_DIR)
 GHDL_CMD=ghdl
 
 #.PHONY: all lst2test cpu_test_vector_files import alu_tests iau_tests dau_tests reg_tests
-.PHONY: all alu_tests
+.PHONY: all import alu_tests
 
 #.PHONY: cpu_tests_all cpu_alu_tests cpu_data_move_tests cpu_flow_skip_tests cpu_flow_cond_branch_tests
 
