@@ -6,11 +6,12 @@
 
 STACK_SIZE = $(shell ulimit -s)
 WORK_DIR=work
-GHDL_FLAGS=--std=08 --workdir=$(WORK_DIR)
+GHDL_FLAGS=--std=08 --workdir=$(WORK_DIR) -fsynopsys
 GHDL_CMD=ghdl
+GTKWAVE=gtkwave
 
 #.PHONY: all lst2test cpu_test_vector_files import alu_tests iau_tests dau_tests reg_tests
-.PHONY: all import alu_tests
+.PHONY: all alu_tests
 
 #.PHONY: cpu_tests_all cpu_alu_tests cpu_data_move_tests cpu_flow_skip_tests cpu_flow_cond_branch_tests
 
@@ -34,12 +35,24 @@ import: clean
 	mkdir -p work
 	@$(GHDL_CMD) -i $(GHDL_FLAGS) src/*.vhd
 	@$(GHDL_CMD) -i $(GHDL_FLAGS) src/alu/*.vhd
+	@$(GHDL_CMD) -i $(GHDL_FLAGS) src/flopr/*.vhd
+	@$(GHDL_CMD) -i $(GHDL_FLAGS) src/signext/*.vhd
 #	ghdl -i --std=08 --workdir=work src/memunit/*.vhd
 #	ghdl -i --std=08 --workdir=work src/registers/*.vhd
 
 alu_tests: import
 	@$(GHDL_CMD) -m $(GHDL_FLAGS) alu_1bit_tb
 	@$(GHDL_CMD) -r $(GHDL_FLAGS) alu_1bit_tb --vcd=$(WORK_DIR)/alu_1bit_tb.vcd
+
+flopr_tests: import
+	@$(GHDL_CMD) -m $(GHDL_FLAGS) flopr_tb
+	@$(GHDL_CMD) -r $(GHDL_FLAGS) flopr_tb --vcd=$(WORK_DIR)/flopr_tb.vcd --wave=flopr_tb.ghw --stop-time=150ns
+	@$(GTKWAVE) flopr_tb.ghw --end=150000000
+
+signext_tests: import
+	@$(GHDL_CMD) -m $(GHDL_FLAGS) signext_tb 
+	@$(GHDL_CMD) -r $(GHDL_FLAGS) signext_tb --vcd=$(WORK_DIR)/signext_tb.vcd --wave=signext_tb.ghw --stop-time=150ns
+	@$(GTKWAVE) signext_tb.ghw --end=150000000
 
 #iau_tests: import
 #	ghdl -m --std=08 --workdir=work iau_tb

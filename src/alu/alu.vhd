@@ -1,4 +1,3 @@
-
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 
@@ -8,18 +7,18 @@ entity alu is
 	port(
 		a 			: in std_logic_vector(data_width - 1 downto 0);		-- param 1
 		b			: in std_logic_vector(data_width - 1 downto 0);		-- param 2
-		ALUControl	: in std_logic_vector(3 downto 0);					-- operation 4bits
-		result		: out std_logic_vector(data_width - 1 downto 0);	-- result 
-		zero		: out std_logic                           -- 1 if result is 0
+		ALUControl	        : in std_logic_vector(3 downto 0);					-- operation 4bits
+		result		        : out std_logic_vector(data_width - 1 downto 0);	-- result 
+		zero		        : out std_logic                           -- 1 if result is 0
     );								
 
 end alu;
 
-architecture dataflow of alu is
-	begin
-        commands: process (ALUControl)
-        begin
-
+architecture behaviour of alu is
+begin
+  commands: process (ALUControl)
+  begin
+    
             case ALUControl is
                 when "0000" =>
                     result <= a and b;
@@ -39,7 +38,7 @@ architecture dataflow of alu is
                     result <= (others => 'X');  -- never forget this, avoids memory
             end case;
         end process commands;
-end dataflow;
+end behaviour;
 
 
 
