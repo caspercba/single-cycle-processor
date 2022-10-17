@@ -15,10 +15,10 @@ architecture test of signext_tb is
 	);
 	end component;
 
-	constant LDUR_OP: std_logic_vector := "11111000010";
-	constant LDUR_ADD :std_logic_vector:= "000001111";
-	constant LDUR_OTHER :std_logic_vector:= "XXXXXXXXXXXX";
-	constant LDUR :std_logic_vector:= LDUR_OP & LDUR_ADD & LDUR_OTHER;
+	constant LDUR_OP: std_logic_vector (10 downto 0):= "11111000010";
+	constant LDUR_ADD :std_logic_vector(8 downto 0):= "100001111";
+	constant LDUR_OTHER :std_logic_vector(11 downto 0):= "000000000000";
+	signal LDUR :std_logic_vector(31 downto 0):= LDUR_OP & LDUR_ADD & LDUR_OTHER;
 	signal zeros: std_logic_vector(63 downto 0):=(others=>'0');
 	signal a: std_logic_vector(31 downto 0);
 	signal y: std_logic_vector(63 downto 0);
@@ -28,8 +28,11 @@ begin
 		 stimulus : process
 		 begin
 			 wait for 10 ns;
-		report "START";
+		report "INPUT: " & to_string(LDUR);
 		a<=LDUR;
+		wait for 1 ns;
+		report "last 9 bits: " & to_string(y(8 downto 0));
+		report "first 55 bits: " &to_string (y(63 downto 0));
 		assert(y(8 downto 0)=LDUR_ADD);
 		assert(y(63 downto 9)=zeros(54 downto 0));
 		--report "END";
