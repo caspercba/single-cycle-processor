@@ -6,7 +6,7 @@
 
 STACK_SIZE = $(shell ulimit -s)
 WORK_DIR=work
-GHDL_FLAGS=--std=08 --workdir=$(WORK_DIR) -fsynopsys
+GHDL_FLAGS=--std=08 --workdir=$(WORK_DIR)
 GHDL_CMD=ghdl
 GTKWAVE=gtkwave
 
@@ -33,13 +33,13 @@ all:
 
 import: clean
 	mkdir -p work
-	@$(GHDL_CMD) -i $(GHDL_FLAGS) src/*.vhd
+	@$(GHDL_CMD) -i $(GHDL_FLAGS) src/shared/*.vhd
 	@$(GHDL_CMD) -i $(GHDL_FLAGS) src/alu/*.vhd
 	@$(GHDL_CMD) -i $(GHDL_FLAGS) src/flopr/*.vhd
 	@$(GHDL_CMD) -i $(GHDL_FLAGS) src/signext/*.vhd
 #	ghdl -i --std=08 --workdir=work src/memunit/*.vhd
 #	ghdl -i --std=08 --workdir=work src/registers/*.vhd
-
+	
 alu_tests: import
 	@$(GHDL_CMD) -m $(GHDL_FLAGS) alu_1bit_tb
 	@$(GHDL_CMD) -r $(GHDL_FLAGS) alu_1bit_tb --vcd=$(WORK_DIR)/alu_1bit_tb.vcd
