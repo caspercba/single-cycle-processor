@@ -41,8 +41,9 @@ import: clean
 #	ghdl -i --std=08 --workdir=work src/registers/*.vhd
 	
 alu_tests: import
-	@$(GHDL_CMD) -m $(GHDL_FLAGS) alu_1bit_tb
-	@$(GHDL_CMD) -r $(GHDL_FLAGS) alu_1bit_tb --vcd=$(WORK_DIR)/alu_1bit_tb.vcd
+	@$(GHDL_CMD) -m $(GHDL_FLAGS) alu_tb
+	@$(GHDL_CMD) -r $(GHDL_FLAGS) alu_tb --vcd=$(WORK_DIR)/alu_tb.vcd
+	@$(GTKWAVE) alu_tb.ghw --end=150000000
 
 flopr_tests: import
 	@$(GHDL_CMD) -m $(GHDL_FLAGS) flopr_tb

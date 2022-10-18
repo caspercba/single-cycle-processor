@@ -27,6 +27,7 @@ architecture test of signext_tb is
 	constant test4:std_logic_vector(31 downto 0) := build_D_instruction(OP_STUR, "100000001");
 	constant test5:std_logic_vector(31 downto 0) := build_CB_instruction(OP_CBZ, "0000001111110000000");
 	constant test6:std_logic_vector(31 downto 0) := build_CB_instruction(OP_CBZ, "1010101010101010101");
+	constant test7:std_logic_vector(31 downto 0) := build_R_instruction(OP_ADD);
 	
 	constant out1: std_logic_vector(63 downto 0):= (D_EXPECTED_HEAD_RANGE => '0', D_EXPECTED_ADDR_RANGE => "001001111");
 	constant out2: std_logic_vector(63 downto 0):= (D_EXPECTED_HEAD_RANGE => '1', D_EXPECTED_ADDR_RANGE => "110100111");
@@ -34,6 +35,7 @@ architecture test of signext_tb is
 	constant out4: std_logic_vector(63 downto 0):= (D_EXPECTED_HEAD_RANGE => '1', D_EXPECTED_ADDR_RANGE => "100000001");
 	constant out5: std_logic_vector(63 downto 0):= (CB_EXPECTED_HEAD_RANGE => '0', CB_EXPECTED_ADDR_RANGE => "0000001111110000000");
 	constant out6: std_logic_vector(63 downto 0):= (CB_EXPECTED_HEAD_RANGE => '1', CB_EXPECTED_ADDR_RANGE => "1010101010101010101");
+	constant out7: std_logic_vector(63 downto 0):= (others=>'0');
 	
 	signal a: std_logic_vector(31 downto 0);
 	signal y: std_logic_vector(63 downto 0);
@@ -80,6 +82,12 @@ begin
 			report "expected: " & to_string(out6(63 downto 0));
 			report "result  : " & to_string(y(63 downto 0));
 			assert(y=out6);
+			wait for 5 ns;
+			a <= test7;
+			wait for 1 ns;
+			report "expected: " & to_string(out7(63 downto 0));
+			report "result  : " & to_string(y(63 downto 0));
+			assert(y=out7);
 			wait for 5 ns;
 			stop;
 		end process stimulus;

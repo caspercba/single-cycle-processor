@@ -1,45 +1,45 @@
+
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
+--use std.textio.all;
+library work;
+use work.alu_helper.ALL;
+
+
+
 
 entity alu is
-	generic(data_width : integer := 64);
-
 	port(
-		a 			: in std_logic_vector(data_width - 1 downto 0);		-- param 1
-		b			: in std_logic_vector(data_width - 1 downto 0);		-- param 2
-		ALUControl	        : in std_logic_vector(3 downto 0);					-- operation 4bits
-		result		        : out std_logic_vector(data_width - 1 downto 0);	-- result 
-		zero		        : out std_logic                           -- 1 if result is 0
-    );								
-
+	a,b		: in std_logic_vector(63 downto 0);
+	ALUControl	: in std_logic_vector(3 downto 0);
+	result		: out std_logic_vector(63 downto 0);
+	zero		: out std_logic
+);
 end alu;
 
-architecture behaviour of alu is
+
+architecture behavioural of alu is
+
+	--alias D_address_sign is a(20);
+	--alias CB_address_sign is a(23);
 begin
-  commands: process (ALUControl)
-  begin
-    
-            case ALUControl is
-                when "0000" =>
-                    result <= a and b;
-                when "0001" =>
-                    result <= a or b;
-                when "0010" =>
-                    -- ADD a+b
-                    result <= a or b;
-                when "0110" =>
-                    -- SUB a-b
-                    result <= a or b;
-                when "0111" =>
-                    result <= b;	-- pass input b
-                when "1100" =>
-                    result <= not (a or b);	-- a NOR b
-                when others =>
-                    result <= (others => 'X');  -- never forget this, avoids memory
-            end case;
-        end process commands;
-end behaviour;
-
-
-
+	process(a,b,ALUControl)
+	begin
+		if(ALUControl=CTRL_AND) then
+			result<=a and b;
+		elsif(ALUControl=CTRL_OR) then
+			result<=a or b;
+		elsif(ALUControl=CTRL_ADD) then
+			result<=a + b;
+		elsif(ALUControl=CTRL_SUB) then
+			result<=a-b;
+		elsif(ALUControl=CTRL_PASS) then
+			result<=b;
+		elsif(ALUControl=CTRL_NOR) then
+			result<=a nor b;
+		else
+			result<=(others=>'0');
+		end if;
+end process;
+end behavioural;
 
