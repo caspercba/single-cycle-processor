@@ -37,9 +37,21 @@ import: clean
 	@$(GHDL_CMD) -i $(GHDL_FLAGS) src/alu/*.vhd
 	@$(GHDL_CMD) -i $(GHDL_FLAGS) src/flopr/*.vhd
 	@$(GHDL_CMD) -i $(GHDL_FLAGS) src/signext/*.vhd
+	@$(GHDL_CMD) -i $(GHDL_FLAGS) src/imem/*.vhd
+	@$(GHDL_CMD) -i $(GHDL_FLAGS) src/regfile/*.vhd
 #	ghdl -i --std=08 --workdir=work src/memunit/*.vhd
 #	ghdl -i --std=08 --workdir=work src/registers/*.vhd
 	
+regfile_tests: import
+	@$(GHDL_CMD) -m $(GHDL_FLAGS) regfile_tb
+	@$(GHDL_CMD) -r $(GHDL_FLAGS) regfile_tb --vcd=$(WORK_DIR)/regfile_tb.vcd --wave=regfile_tb.ghw
+	#@$(GTKWAVE) regfile_tb.ghw 
+
+imem_tests: import
+	@$(GHDL_CMD) -m $(GHDL_FLAGS) imem_tb
+	@$(GHDL_CMD) -r $(GHDL_FLAGS) imem_tb --vcd=$(WORK_DIR)/imem_tb.vcd --wave=imem_tb.ghw
+	#@$(GTKWAVE) imem_tb.ghw 
+
 alu_tests: import
 	@$(GHDL_CMD) -m $(GHDL_FLAGS) alu_tb
 	@$(GHDL_CMD) -r $(GHDL_FLAGS) alu_tb --vcd=$(WORK_DIR)/alu_tb.vcd --wave=alu_tb.ghw
