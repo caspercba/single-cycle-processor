@@ -42,8 +42,8 @@ import: clean
 	
 alu_tests: import
 	@$(GHDL_CMD) -m $(GHDL_FLAGS) alu_tb
-	@$(GHDL_CMD) -r $(GHDL_FLAGS) alu_tb --vcd=$(WORK_DIR)/alu_tb.vcd
-	@$(GTKWAVE) alu_tb.ghw --end=150000000
+	@$(GHDL_CMD) -r $(GHDL_FLAGS) alu_tb --vcd=$(WORK_DIR)/alu_tb.vcd --wave=alu_tb.ghw
+	#@$(GTKWAVE) alu_tb.ghw 
 
 flopr_tests: import
 	@$(GHDL_CMD) -m $(GHDL_FLAGS) flopr_tb
