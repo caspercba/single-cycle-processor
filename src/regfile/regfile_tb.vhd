@@ -26,7 +26,7 @@ architecture test of regfile_tb is
 	signal wd3, rd1, rd2	: std_logic_vector(63 downto 0);
 
 begin
-	
+	 	
 
 end architecture;
 

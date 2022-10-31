@@ -17,9 +17,23 @@ end entity regfile;
 architecture behavioural of regfile is
 	-- signals or constants here
 	type reg is array(31 downto 0) of std_logic_vector(63 downto 0);
-	signal r	: reg;
+	function init_reg return reg is
+	begin
+		variable result: reg;
+		for i in result'length - 2 downto 0 loop
+			result(i) := i;
+		end loop;
+		result(31) := 0;
+		return result;
+	end function init_reg;
 
+	signal r	: reg := init_reg;
+
+	for i in 30 downto 0 loop
+		r(i) <= std_logic_vector(to_unsigned(i));
+	end loop;
 begin
+
 	process(ra1)
 	begin				
 		rd1 <= r(unsigned(ra1));
