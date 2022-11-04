@@ -1,5 +1,6 @@
 library ieee;
 use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
 
 entity regfile is
 	port(
@@ -17,31 +18,29 @@ end entity regfile;
 architecture behavioural of regfile is
 	-- signals or constants here
 	type reg is array(31 downto 0) of std_logic_vector(63 downto 0);
+	
 	function init_reg return reg is
-	begin
 		variable result: reg;
-		for i in result'length - 2 downto 0 loop
-			result(i) := i;
+	begin
+		for i in reg'range loop 
+			result(i) := std_logic_vector(to_unsigned(i, result(i)'length));
 		end loop;
-		result(31) := 0;
+		result(31) := (result(31)'range => '0');
 		return result;
 	end function init_reg;
 
 	signal r	: reg := init_reg;
 
-	for i in 30 downto 0 loop
-		r(i) <= std_logic_vector(to_unsigned(i));
-	end loop;
 begin
 
 	process(ra1)
 	begin				
-		rd1 <= r(unsigned(ra1));
+		rd1 <= r(to_integer(unsigned(ra1)));
 	end process;
 
 	process(ra2)
 	begin
-		rd2 <= r(unsigned(ra2));
+		rd2 <= r(to_integer(unsigned(ra2)));
 	end process;
 
 end architecture;
