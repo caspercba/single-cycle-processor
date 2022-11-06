@@ -25,7 +25,7 @@ architecture test of regfile_tb is
 );
 	end component regfile;
 
-	signal clk, we3		: std_logic;
+	signal clk, we3		: std_logic := '0';
 	signal ra1, ra2, wa3	: std_logic_vector(4 downto 0);
 	signal wd3, rd1, rd2	: std_logic_vector(63 downto 0);
 	signal current_reg	: integer := 0;
@@ -36,8 +36,6 @@ begin
 
 		clk_process: process(clk)
 		begin
-			
-	report "start";
 			clk <= not clk after half_period;
 		end process clk_process;
 
@@ -58,9 +56,12 @@ begin
 			ra1<=std_logic_vector(to_unsigned(31, ra1'length));
 			ra2<=std_logic_vector(to_unsigned(31, ra2'length));
 		
+			wait until falling_edge(clk);
+			log("Checking register 31");
 			assert rd1 = (rd1'range => '0')
-			report "RD1 should always be 0" severity error;
-			assert rd2= (rd2'range => '0');
+			report "RD1, expected:  0\nRD1 got: " & to_hex_string(rd1) severity error;
+			assert rd2= (rd2'range => '0')
+			report "RD2, expected: 0. Got: " & to_hex_string(rd2) severity error;
 			log("Stopping test");
 			stop;
 

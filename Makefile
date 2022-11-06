@@ -17,6 +17,8 @@ GTKWAVE=gtkwave
 
 #.PHONY: cpu_flow_uncond_branch_tests continuous_tests clean
 
+tests: signext_tests flopr_tests alu_tests imem_tests regfile_tests
+
 all:
 	sleep 1
 
@@ -44,12 +46,12 @@ import: clean
 	
 regfile_tests: import
 	@$(GHDL_CMD) -m $(GHDL_FLAGS) regfile_tb
-	@$(GHDL_CMD) -r $(GHDL_FLAGS) regfile_tb --vcd=$(WORK_DIR)/regfile_tb.vcd --wave=regfile_tb.ghw
+	@$(GHDL_CMD) -r $(GHDL_FLAGS) regfile_tb --vcd=$(WORK_DIR)/regfile_tb.vcd --wave=regfile_tb.ghw --stop-time=450ns
 	#@$(GTKWAVE) regfile_tb.ghw 
 
 imem_tests: import
 	@$(GHDL_CMD) -m $(GHDL_FLAGS) imem_tb
-	@$(GHDL_CMD) -r $(GHDL_FLAGS) imem_tb --vcd=$(WORK_DIR)/imem_tb.vcd --wave=imem_tb.ghw
+	@$(GHDL_CMD) -r $(GHDL_FLAGS) imem_tb --vcd=$(WORK_DIR)/imem_tb.vcd --wave=imem_tb.ghw 
 	#@$(GTKWAVE) imem_tb.ghw 
 
 alu_tests: import
