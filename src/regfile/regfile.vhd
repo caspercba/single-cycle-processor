@@ -2,6 +2,9 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
+library work;
+use work.logger.log;
+
 entity regfile is
 	port(
 	clk	: in std_logic;
@@ -33,14 +36,15 @@ architecture behavioural of regfile is
 
 begin
 
-	process(ra1)
+	process(ra1, ra2, clk, wa3, wd3, we3)
 	begin				
 		rd1 <= r(to_integer(unsigned(ra1)));
-	end process;
-
-	process(ra2)
-	begin
 		rd2 <= r(to_integer(unsigned(ra2)));
+		if rising_edge(clk) and we3='1' then
+				log("write bit on");
+				r(to_integer(unsigned(wa3))) <= wd3;
+				log("wrote: " & to_hex_string(wd3) & " onto: " & to_hex_string(wa3));
+		end if;
 	end process;
 
 end architecture;

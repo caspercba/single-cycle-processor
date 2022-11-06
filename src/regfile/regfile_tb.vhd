@@ -62,7 +62,14 @@ begin
 			report "RD1, expected:  0\nRD1 got: " & to_hex_string(rd1) severity error;
 			assert rd2= (rd2'range => '0')
 			report "RD2, expected: 0. Got: " & to_hex_string(rd2) severity error;
-			log("Stopping test");
+			wait until rising_edge(clk);
+			wa3<="00000";
+			wd3<=std_logic_vector(to_unsigned(100, wd3'length));
+			we3<='1';
+			ra1<="00000";
+			wait until falling_edge(clk);
+			assert rd1=std_logic_vector(to_unsigned(100, rd1'length))
+			report "Writing 100 onto 00000 failed. Got: " & to_hex_string(rd1) severity error;	
 			stop;
 
 		end process stimulus;

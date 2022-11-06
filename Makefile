@@ -46,7 +46,7 @@ import: clean
 	
 regfile_tests: import
 	@$(GHDL_CMD) -m $(GHDL_FLAGS) regfile_tb
-	@$(GHDL_CMD) -r $(GHDL_FLAGS) regfile_tb --vcd=$(WORK_DIR)/regfile_tb.vcd --wave=regfile_tb.ghw --stop-time=450ns
+	@$(GHDL_CMD) -r $(GHDL_FLAGS) regfile_tb --vcd=$(WORK_DIR)/regfile_tb.vcd --wave=regfile_tb.ghw --stop-time=950ns
 	#@$(GTKWAVE) regfile_tb.ghw 
 
 imem_tests: import
