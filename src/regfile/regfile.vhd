@@ -41,9 +41,10 @@ begin
 		rd1 <= r(to_integer(unsigned(ra1)));
 		rd2 <= r(to_integer(unsigned(ra2)));
 		if rising_edge(clk) and we3='1' then
-				log("write bit on");
+			if wa3 /= "11111" then
 				r(to_integer(unsigned(wa3))) <= wd3;
 				log("wrote: " & to_hex_string(wd3) & " onto: " & to_hex_string(wa3));
+			end if;
 		end if;
 	end process;
 

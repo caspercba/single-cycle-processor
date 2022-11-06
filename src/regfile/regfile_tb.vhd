@@ -70,6 +70,13 @@ begin
 			wait until falling_edge(clk);
 			assert rd1=std_logic_vector(to_unsigned(100, rd1'length))
 			report "Writing 100 onto 00000 failed. Got: " & to_hex_string(rd1) severity error;	
+			we3<='0';
+			wd3<=std_logic_vector(to_unsigned(200, wd3'length));
+			ra1<="00000";
+			wait until falling_edge(clk);
+			log("Testing write is disabled when we3 is 0");
+			assert rd1=std_logic_vector(to_unsigned(100, rd1'length))
+			report "Writing 200 onto 00000 should still return 100 when we3 is 0. Got: " & to_hex_string(rd1) severity error;	
 			stop;
 
 		end process stimulus;
