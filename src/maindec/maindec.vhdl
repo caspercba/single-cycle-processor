@@ -16,23 +16,54 @@ end entity maindec;
 
 architecture behavioural of maindec is
 	-- signals or constants here
-	--type reg is array(31 downto 0) of std_logic_vector(63 downto 0);
-	
-	function init_reg return reg is
-		variable result: reg;
-	begin
-		for i in reg'range loop 
-			result(i) := std_logic_vector(to_unsigned(i, result(i)'length));
-		end loop;
-		result(31) := (result(31)'range => '0');
-		return result;
-	end function init_reg;
-
-	signal r	: reg := init_reg;
-
 begin
 
-	process(ra1, ra2, clk, wa3, wd3, we3)
-	begin			
-	end process;
+
+	case Op is
+		when OP_ADD|OP_SUB|OP_AND|OP_ORR	=> 
+				RegToLoc	<=	'0';
+				ALUSrc		<=	'0';
+				MemToReg	<=	'0';
+				RegWrite	<=	'1';
+				MemRead		<=	'0';
+				MemWrite	<=	'0';
+				Branch		<=	'0';
+				ALUOp		<=	"10";
+		when OP_LDUR	=>
+				RegToLoc	<=	'0';
+				ALUSrc		<=	'1';
+				MemToReg	<=	'1';
+				RegWrite	<=	'1';
+				MemRead		<=	'1';
+				MemWrite	<=	'0';
+				Branch		<=	'0';
+				ALUOp		<=	"00";
+		when OP_STUR	=>
+				RegToLoc	<=	'1';
+				ALUSrc		<=	'1';
+				MemToReg	<=	'0';
+				RegWrite	<=	'0';
+				MemRead		<=	'0';
+				MemWrite	<=	'1';
+				Branch		<=	'0';
+				ALUOp		<=	"00";
+		when OP_CBZ	=>
+				RegToLoc	<=	'1';
+				ALUSrc		<=	'0';
+				MemToReg	<=	'0';
+				RegWrite	<=	'0';
+				MemRead		<=	'0';
+				MemWrite	<=	'0';
+				Branch		<=	'1';
+				ALUOp		<=	"01";
+		when others	=>
+				RegToLoc	<=	'0';
+				ALUSrc		<=	'0';
+				MemToReg	<=	'0';
+				RegWrite	<=	'0';
+				MemRead		<=	'0';
+				MemWrite	<=	'0';
+				Branch		<=	'0';
+				ALUOp		<=	"00";
+	end case;
 end architecture;	
