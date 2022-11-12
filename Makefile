@@ -17,7 +17,7 @@ GTKWAVE=gtkwave
 
 #.PHONY: cpu_flow_uncond_branch_tests continuous_tests clean
 
-tests: signext_tests flopr_tests alu_tests imem_tests regfile_tests
+tests: signext_tests flopr_tests alu_tests imem_tests regfile_tests maindec_tests
 
 all:
 	sleep 1
@@ -41,8 +41,14 @@ import: clean
 	@$(GHDL_CMD) -i $(GHDL_FLAGS) src/signext/*.vhd
 	@$(GHDL_CMD) -i $(GHDL_FLAGS) src/imem/*.vhd
 	@$(GHDL_CMD) -i $(GHDL_FLAGS) src/regfile/*.vhd
+	@$(GHDL_CMD) -i $(GHDL_FLAGS) src/maindec/*.vhd
 #	ghdl -i --std=08 --workdir=work src/memunit/*.vhd
 #	ghdl -i --std=08 --workdir=work src/registers/*.vhd
+
+maindec_tests: import
+	@$(GHDL_CMD) -m $(GHDL_FLAGS) maindec_tb
+	@$(GHDL_CMD) -r $(GHDL_FLAGS) maindec_tb --vcd=$(WORK_DIR)/maindec_tb.vcd --wave=maindec_tb.ghw --stop-time=950ns
+	#@$(GTKWAVE) maindec_tb.ghw 
 	
 regfile_tests: import
 	@$(GHDL_CMD) -m $(GHDL_FLAGS) regfile_tb

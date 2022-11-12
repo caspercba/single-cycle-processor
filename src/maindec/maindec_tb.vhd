@@ -59,11 +59,14 @@ begin
 		for i in tests'range loop
 			log("maindec testcase #" & to_string(i) & " of " & to_string(tests'length)
 			Op<=tests(i).Op;
-			RegToLoc<=tests(i).RegToLoc;
-			ALUSrc<=tests(i).ALUSrc;
-			MemtoReg<=tests(i).MemtoReg;
-			RegWrite<=tests(i).RegWrite;
-			MemRead<=tests(i).MemRead;
-			MemWrite<=tests(i).MemWrite;
-			Branch<=tests(i).Branch;
+			assert RegToLoc=tests(i).RegToLoc report "Expected: " & to_hex_string(tests(i).RegToLoc) & " Got: " & to_hex_string(RegToLoc) severity error;
+			assert ALUSrc=tests(i).ALUSrc report "Expected: " & to_hex_string(tests(i).ALUSrc) & " Got: " & to_hex_string(ALUSrc) severity error;
+			assert MemtoReg=tests(i).MemtoReg report "Expected: " & to_hex_string(tests(i).MemtoReg) & " Got: " & to_hex_string(MemtoReg) severity error;
+			assert RegWrite=tests(i).RegWrite report "Expected: " & to_hex_string(tests(i).MemtoReg) & " Got: " & to_hex_string(RegWrite) severity error;
+			assert MemRead=tests(i).MemRead report "Expected: " & to_hex_string(tests(i).MemRead) & " Got: " & to_hex_string(MemRead) severity error;
+			assert MemWrite=tests(i).MemWrite report "Expected: " & to_hex_string(tests(i).MemWrite) & " Got: " & to_hex_string(MemWrite) severity error;
+			assert Branch=tests(i).Branch report "Expected: " & to_hex_string(tests(i).Branch) & " Got: " & to_hex_string(Branch) severity error;
+		end loop;
+	end process stimulus;
+end architecture;
 
