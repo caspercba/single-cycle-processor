@@ -1,11 +1,14 @@
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 
+library work;
+use work.operations.all;
+
 entity flopr is
-	generic( datawidth: integer := 64);
 	port(
 		clk, reset	: in std_logic;
-		d, q		: in std_logic_vector(datawidth - 1 downto 0)
+		d		: in data_bus; 
+		q		: out data_bus 
 	);
 end flopr;
 

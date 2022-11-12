@@ -12,7 +12,7 @@ architecture test of signext_tb is
 	component signext
 	port(
 	a		: in std_logic_vector(31 downto 0);
-	y		: out std_logic_vector(63 downto 0)
+	y		: out data_bus
 	);
 	end component;
 
@@ -29,16 +29,16 @@ architecture test of signext_tb is
 	constant test6:std_logic_vector(31 downto 0) := build_CB_instruction(OP_CBZ, "1010101010101010101");
 	constant test7:std_logic_vector(31 downto 0) := build_R_instruction(OP_ADD);
 	
-	constant out1: std_logic_vector(63 downto 0):= (D_EXPECTED_HEAD_RANGE => '0', D_EXPECTED_ADDR_RANGE => "001001111");
-	constant out2: std_logic_vector(63 downto 0):= (D_EXPECTED_HEAD_RANGE => '1', D_EXPECTED_ADDR_RANGE => "110100111");
-	constant out3: std_logic_vector(63 downto 0):= (D_EXPECTED_HEAD_RANGE => '0', D_EXPECTED_ADDR_RANGE => "011111110");
-	constant out4: std_logic_vector(63 downto 0):= (D_EXPECTED_HEAD_RANGE => '1', D_EXPECTED_ADDR_RANGE => "100000001");
-	constant out5: std_logic_vector(63 downto 0):= (CB_EXPECTED_HEAD_RANGE => '0', CB_EXPECTED_ADDR_RANGE => "0000001111110000000");
-	constant out6: std_logic_vector(63 downto 0):= (CB_EXPECTED_HEAD_RANGE => '1', CB_EXPECTED_ADDR_RANGE => "1010101010101010101");
-	constant out7: std_logic_vector(63 downto 0):= (others=>'0');
+	constant out1: data_bus:= (D_EXPECTED_HEAD_RANGE => '0', D_EXPECTED_ADDR_RANGE => "001001111");
+	constant out2: data_bus:= (D_EXPECTED_HEAD_RANGE => '1', D_EXPECTED_ADDR_RANGE => "110100111");
+	constant out3: data_bus:= (D_EXPECTED_HEAD_RANGE => '0', D_EXPECTED_ADDR_RANGE => "011111110");
+	constant out4: data_bus:= (D_EXPECTED_HEAD_RANGE => '1', D_EXPECTED_ADDR_RANGE => "100000001");
+	constant out5: data_bus:= (CB_EXPECTED_HEAD_RANGE => '0', CB_EXPECTED_ADDR_RANGE => "0000001111110000000");
+	constant out6: data_bus:= (CB_EXPECTED_HEAD_RANGE => '1', CB_EXPECTED_ADDR_RANGE => "1010101010101010101");
+	constant out7: data_bus:= (others=>'0');
 	
 	signal a: std_logic_vector(31 downto 0);
-	signal y: std_logic_vector(63 downto 0);
+	signal y: data_bus;
 
 begin
 	UUT: entity work.signext

@@ -5,18 +5,20 @@ use ieee.numeric_std.all;
 
 library work;
 use work.logger.log;
+use work.ss_math.all;
+use work.operations.all;
 
 entity fetch_tb is
 end fetch_tb;
 
 architecture test of fetch_tb is
 	signal PCSrc_f, clk, reset	:	std_logic := '0';
-	signal PCBranch_F, imem_addr_F	:	std_logic_vector(63 downto 0);
+	signal PCBranch_F, imem_addr_F	:	data_bus;
 	
 	constant half_period	:	time := 5 ns;
 	component fetch port(
 		PCSrc_F, clk, reset	:	in std_logic;
-		PCBranch_F, imem_addr_F	:	in std_logic_vector(63 downto 0)
+		PCBranch_F, imem_addr_F	:	in data_bus
 	);
 	end component fetch;
 	
@@ -31,7 +33,7 @@ begin
 	
 	stimulus : process
 		variable clock_count: integer := 0;
-		variable last_pc	:	std_logic_vector(63 downto 0);
+		variable last_pc	:	data_bus;
 	begin
 		wait;
 		if(clock_count>=5) then
@@ -41,10 +43,10 @@ begin
 		end if;
 		if rising_edge(clk) then
 			if clock_count = 5 then
-				assert to_integer(imem_addr_F) = to_integer(last_pc) + 4;
+				assert imem_addr_F = vec_add(last_pc, 4);
 			end if;
 			if clock_count > 5 then
-				assert to_integer(imem_addr_F) = 0;
+				assert vec_to_int(imem_addr_F) = 0;
 			end if;
 			if clock_count < 10 then
 				clock_count:=clock_count + 1;

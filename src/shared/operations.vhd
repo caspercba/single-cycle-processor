@@ -33,6 +33,9 @@ package operations is
 
 	constant INSTR_SIZE: integer := 32;
 
+	
+	subtype  data_bus is std_logic_vector(63 downto 0);
+
 
 	subtype D_RANGE_OP 	is	integer range INSTR_SIZE-1 downto INSTR_SIZE-D_OP_SIZE;
 	subtype D_RANGE_ADD	is	integer range INSTR_SIZE-D_OP_SIZE-1 downto INSTR_SIZE-D_OP_SIZE-D_ADDR_SIZE;

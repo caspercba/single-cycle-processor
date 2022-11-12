@@ -10,7 +10,7 @@ use work.operations.ALL;
 entity signext is
 	port(
 	a		: in std_logic_vector(31 downto 0);
-	y		: out std_logic_vector(63 downto 0)
+	y		: out data_bus
 );
 end signext;
 

@@ -1,9 +1,11 @@
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.numeric_std.all;
-
 use std.textio.all;
 use std.env.stop;
+
+library work;
+use work.operations.all;
 
 entity flopr_tb is
 end flopr_tb;
@@ -15,16 +17,16 @@ architecture test of flopr_tb is
 	port(
 		clk: in std_logic;
 		reset: in std_logic;
-		d: in std_logic_vector(datawidth - 1 downto 0);
-		q: out std_logic_vector(datawidth -1 downto 0)
+		d: in data_bus; 
+		q: out data_bus 
 	);
 	end component;
 
 	signal clk : std_logic := '0';
 	signal reset: std_logic := '1';
-	signal d: std_logic_vector(datawidth - 1 downto 0);
-	signal q: std_logic_vector(datawidth -1 downto 0);
-	type test_numbers_array is array (natural range <>) of std_logic_vector(datawidth - 1 downto 0);
+	signal d: data_bus; 
+	signal q: data_bus; 
+	type test_numbers_array is array (natural range <>) of data_bus; 
 
 	constant test_numbers : test_numbers_array :=(
 	x"0000000000000001",
@@ -40,7 +42,6 @@ architecture test of flopr_tb is
 
 begin
 	flopr_64 : entity work.flopr
-	generic map(datawidth=>64)	
 	port map(clk=>clk,reset=>reset, d=>d, q=>q);
 		 
 		clk_process: process(clk)
