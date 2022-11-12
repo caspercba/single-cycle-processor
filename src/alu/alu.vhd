@@ -5,15 +5,16 @@ use IEEE.numeric_std.all;
 library work;
 use work.alu_helper.ALL;
 use work.logger.log;
+use work.operations.all;
 
 
 
 
 entity alu is
 	port(
-	a,b		: in std_ulogic_vector(63 downto 0);
+	a,b		: in data_bus; 
 	ALUControl	: in std_logic_vector(3 downto 0);
-	result		: out std_logic_vector(63 downto 0);
+	result		: out data_bus; 
 	zero		: out std_logic
 );
 end alu;
@@ -21,12 +22,11 @@ end alu;
 
 architecture behavioural of alu is
 -- define here signals if needed
-	--signal result_buf: std_logic_vector(63 downto 0);
 	constant zeroes	: std_logic_vector(result'range) := (others => '0');
 begin
 	process(a,b,ALUControl)
-		variable operation: 	alu_op:=A_NONE;
-		variable result_buf	:std_logic_vector(63 downto 0);
+		variable operation	: 	alu_op:=A_NONE;
+		variable result_buf	:	data_bus;	
 	begin
 		zero <= '0';
 		operation := parse_op(ALUControl);

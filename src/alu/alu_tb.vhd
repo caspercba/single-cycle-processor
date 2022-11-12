@@ -8,6 +8,7 @@ library work;
 use work.alu_helper.all;
 use work.ss_math.all;
 use work.logger.all;
+use work.operations.all;
 
 entity alu_tb is
 end alu_tb;
@@ -15,18 +16,18 @@ end alu_tb;
 architecture test of alu_tb is
 
 
-	subtype param is std_logic_vector(63 downto 0);
+	subtype param is data_bus;
 
 	component alu is
 		port(
-		a,b		: in std_logic_vector(63 downto 0);
+		a,b		: in data_bus;
 		ALUControl	: in std_logic_vector(3 downto 0);
-		result		: out std_logic_vector(63 downto 0);
+		result		: out data_bus;
 		zero		: out std_logic
 	);
 	end component alu;
 	
-	signal a,b,result: std_logic_vector(63 downto 0);
+	signal a,b,result: data_bus;
 	signal ALUControl: std_logic_vector(3 downto 0);
 	signal zero	 : std_logic;
 	
@@ -70,7 +71,7 @@ begin
 	UUT: entity work.alu
 	port map(a=>a, b=>b, result=>result, ALUControl=>ALUControl, zero=>zero);
 		stimulus : process
-			variable expected: std_logic_vector(63 downto 0);
+			variable expected: data_bus;
 		begin
 			wait for 10 ns;
 			for i in tests'range loop

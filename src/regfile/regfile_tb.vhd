@@ -5,6 +5,7 @@ use std.env.stop;
 
 library work;
 use work.logger.log;
+use work.operations.all;
 
 entity regfile_tb is
 end regfile_tb;
@@ -19,15 +20,15 @@ architecture test of regfile_tb is
 		ra1	: in std_logic_vector(4 downto 0);
 		ra2	: in std_logic_vector(4 downto 0);
 		wa3	: in std_logic_vector(4 downto 0);
-		wd3	: in std_logic_vector(63 downto 0);
-		rd1	: out std_logic_vector(63 downto 0);
-		rd2	: out std_logic_vector(63 downto 0)
+		wd3	: in data_bus;
+		rd1	: out data_bus;
+		rd2	: out data_bus
 );
 	end component regfile;
 
 	signal clk, we3		: std_logic := '0';
 	signal ra1, ra2, wa3	: std_logic_vector(4 downto 0);
-	signal wd3, rd1, rd2	: std_logic_vector(63 downto 0);
+	signal wd3, rd1, rd2	: data_bus;
 	signal current_reg	: integer := 0;
 
 begin

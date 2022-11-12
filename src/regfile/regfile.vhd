@@ -4,6 +4,7 @@ use ieee.numeric_std.all;
 
 library work;
 use work.logger.log;
+use work.operations.all;
 
 entity regfile is
 	port(
@@ -12,15 +13,15 @@ entity regfile is
 	ra1	: in std_logic_vector(4 downto 0);
 	ra2	: in std_logic_vector(4 downto 0);
 	wa3	: in std_logic_vector(4 downto 0);
-	wd3	: in std_logic_vector(63 downto 0);
-	rd1	: out std_logic_vector(63 downto 0);
-	rd2	: out std_logic_vector(63 downto 0)
+	wd3	: in data_bus;
+	rd1	: out data_bus;
+	rd2	: out data_bus
 );
 end entity regfile;
 
 architecture behavioural of regfile is
 	-- signals or constants here
-	type reg is array(31 downto 0) of std_logic_vector(63 downto 0);
+	type reg is array(31 downto 0) of data_bus;
 	
 	function init_reg return reg is
 		variable result: reg;
