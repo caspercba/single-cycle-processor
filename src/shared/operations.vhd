@@ -2,20 +2,12 @@ library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 
 package operations is
-	-- D type operations
-	constant OP_LDUR: std_logic_vector := "11111000010";
-	constant OP_STUR: std_logic_vector := "11111000000";
 
-	-- CB type operations
-	constant OP_CBZ	: std_logic_vector := "10110100";
-
-	-- R operations
-	constant OP_ADD : std_logic_vector := "10001011000";
-	constant OP_SUB : std_logic_vector := "11001011000";
-	constant OP_AND : std_logic_vector := "10001010000";
-	constant OP_ORR : std_logic_vector := "10101010000";
-
-	constant INSTR_SIZE: integer := 32;
+	-- General Notice about constants. In order to use them in other packages,
+	-- we need them to be constained. In the case of std_logic_vector, we have to
+	-- expclicitly write the range. 
+	-- for more info see this issue from Aug 30th 2022:
+	-- https://github.com/ghdl/ghdl/issues/2184
 
 	constant D_OP_SIZE: integer := 11;
 	constant D_ADDR_SIZE: integer := 9;
@@ -24,6 +16,23 @@ package operations is
 	constant CB_ADDR_SIZE: integer := 19;
 
 	constant R_OP_SIZE: integer := 11;
+
+	-- D type operations
+	constant OP_LDUR: std_logic_vector(D_OP_SIZE-1 downto 0) := "11111000010";
+	constant OP_STUR: std_logic_vector(D_OP_SIZE-1 downto 0) := "11111000000";
+
+	-- CB type operations
+	constant OP_CBZ	: std_logic_vector(CB_OP_SIZE-1 downto 0) := "10110100";
+	constant OP_CBZ_COMPAT : std_logic_vector(R_OP_SIZE-1 downto 0) := OP_CBZ & "XXX";
+
+	-- R operations
+	constant OP_ADD : std_logic_vector(R_OP_SIZE-1 downto 0) := "10001011000";
+	constant OP_SUB : std_logic_vector(R_OP_SIZE-1 downto 0) := "11001011000";
+	constant OP_AND : std_logic_vector(R_OP_SIZE-1 downto 0) := "10001010000";
+	constant OP_ORR : std_logic_vector(R_OP_SIZE-1 downto 0) := "10101010000";
+
+	constant INSTR_SIZE: integer := 32;
+
 
 	subtype D_RANGE_OP 	is	integer range INSTR_SIZE-1 downto INSTR_SIZE-D_OP_SIZE;
 	subtype D_RANGE_ADD	is	integer range INSTR_SIZE-D_OP_SIZE-1 downto INSTR_SIZE-D_OP_SIZE-D_ADDR_SIZE;
