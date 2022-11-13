@@ -17,21 +17,10 @@ GTKWAVE=gtkwave
 
 #.PHONY: cpu_flow_uncond_branch_tests continuous_tests clean
 
-tests: signext_tests flopr_tests alu_tests imem_tests regfile_tests maindec_tests mux_tests fetch_tests
+tests: signext_tests flopr_tests alu_tests imem_tests regfile_tests maindec_tests mux_tests fetch_tests execute_tests
 
 all:
 	sleep 1
-
-#lst2test:
-#	gcc test_vectors/lst2test.c -o test_vectors/lst2test
-
-#cpu_test_vector_files: lst2test
-#	cd test_vectors; ./lst2test < alu_test_part1.lss > alu_test_part1_tv.txt
-#	cd test_vectors; ./lst2test < alu_test_part2.lss > alu_test_part2_tv.txt
-#	cd test_vectors; ./lst2test < data_move_test.lss > data_move_test_tv.txt
-#	cd test_vectors; ./lst2test < flow_skip.lss > flow_skip_tv.txt
-#	cd test_vectors; ./lst2test < flow_cond_branch.lss > flow_cond_branch_tv.txt
-# 	cd test_vectors; ./lst2test < flow_uncond_branch.lss > flow_uncond_branch_tv.txt
 
 import: clean
 	mkdir -p work
@@ -44,13 +33,17 @@ import: clean
 	@$(GHDL_CMD) -i $(GHDL_FLAGS) src/maindec/*.vhd
 	@$(GHDL_CMD) -i $(GHDL_FLAGS) src/mux/*.vhd
 	@$(GHDL_CMD) -i $(GHDL_FLAGS) src/fetch/*.vhd
-#	ghdl -i --std=08 --workdir=work src/memunit/*.vhd
-#	ghdl -i --std=08 --workdir=work src/registers/*.vhd
+	@$(GHDL_CMD) -i $(GHDL_FLAGS) src/execute/*.vhd
+
+execute_tests: import
+	@$(GHDL_CMD) -m $(GHDL_FLAGS) execute_tb
+	@$(GHDL_CMD) -r $(GHDL_FLAGS) execute_tb --vcd=$(WORK_DIR)/execute_tb.vcd --wave=execute_tb.ghw --stop-time=950ns
+	#@$(GTKWAVE) execute_tb.ghw 
 
 fetch_tests: import
 	@$(GHDL_CMD) -m $(GHDL_FLAGS) fetch_tb
 	@$(GHDL_CMD) -r $(GHDL_FLAGS) fetch_tb --vcd=$(WORK_DIR)/fetch_tb.vcd --wave=fetch_tb.ghw --stop-time=950ns
-	@$(GTKWAVE) fetch_tb.ghw 
+	#@$(GTKWAVE) fetch_tb.ghw 
 
 mux_tests: import
 	@$(GHDL_CMD) -m $(GHDL_FLAGS) mux_tb

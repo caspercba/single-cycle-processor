@@ -9,6 +9,7 @@ package logger is
 	procedure log(data: string); 
 	procedure err(data: string);
 	procedure checkEqual(expected: std_logic_vector; actual: std_logic_vector; desc: string);
+	procedure checkEqual(expected: std_logic; actual: std_logic; desc: string);
 	procedure checkZeroes(param: std_logic_vector; desc: string);
 end logger;
 
@@ -40,6 +41,11 @@ package body logger is
 			report desc & " ==> FAILED" & "(Expected: " & to_hex_string(expected) 
 			& " || Got: " & to_hex_string(actual) & ")" severity error;
 		end if;
+	end checkEqual;
+
+	procedure checkEqual(expected: std_logic; actual: std_logic; desc: string) is
+	begin
+		checkEqual((0=>expected), (0=>actual), desc);
 	end checkEqual;
 
 	procedure checkZeroes(param: std_logic_vector; desc: string) is
