@@ -14,8 +14,8 @@ end execute_tb;
 
 architecture test of execute_tb is
 	
-	signal AluSrc			:	std_logic := '0';
-	signal AluControl		:	std_logic_vector(3 downto 0) := (others => '0');
+	signal aluSrc			:	std_logic := '0';
+	signal aluControl		:	std_logic_vector(3 downto 0) := (others => '0');
 	signal PC_E, signImm_E		:	data_bus := (others => '0');
 	signal readData1_E		:	data_bus := (others => '0');
 	signal readData2_E		:	data_bus := (others => '0');
@@ -32,8 +32,8 @@ architecture test of execute_tb is
 	constant DEC_100	:	data_bus := int_to_vec(100, data_bus'length);
 
 	type test_vector is record
-		AluSrc			:	std_logic;
-		AluControl		:	std_logic_vector(3 downto 0);
+		aluSrc			:	std_logic;
+		aluControl		:	std_logic_vector(3 downto 0);
 		PC_E, signImm_E		:	data_bus;
 		readData1_E		:	data_bus;
 		readData2_E		:	data_bus;
@@ -45,7 +45,7 @@ architecture test of execute_tb is
 	type test_data is array (natural range <>) of test_vector;
 
 	constant tests: test_data := (
--- AluSrc, AluControl, PC_E   ,signImm , readD1 , readD2 , PCBranc, aluRes , writeD, zero
+-- aluSrc, aluControl, PC_E   ,signImm , readD1 , readD2 , PCBranc, aluRes , writeD, zero
 	('0', ADD_HEX, DEC_100, DEC_100, DEC_100, DEC_200, DEC_500, DEC_300, DEC_200, '0'),
 	('0', AND_HEX, DEC_100, DEC_100, DEC_100, DEC_100, DEC_500, DEC_100, DEC_100, '0'),
 	('1', ADD_HEX, DEC_100, DEC_300, DEC_100, DEC_200, DEC_1300, DEC_400, DEC_200, '0'),
@@ -55,7 +55,7 @@ architecture test of execute_tb is
 	
 begin
 	dut : entity work.execute
-	port map(AluSrc => AluSrc, AluControl => AluControl,
+	port map(aluSrc => aluSrc, aluControl => aluControl,
 		PC_E => PC_E, signImm_E => signImm_E,
 		readData1_E => readData1_E, readData2_E => readData2_E,
 		PCBranch_E => PCBranch_E, aluResult_E => aluResult_E,
@@ -65,8 +65,8 @@ begin
 	begin
 		wait for 5 ns;
 		for i in tests'range loop
-			AluSrc		<= tests(i).AluSrc;
-			AluControl	<= tests(i).AluControl;
+			aluSrc		<= tests(i).aluSrc;
+			aluControl	<= tests(i).aluControl;
 			PC_E		<= tests(i).PC_E;
 			signImm_E	<= tests(i).signImm_E;
 			readData1_E	<= tests(i).readData1_E;
