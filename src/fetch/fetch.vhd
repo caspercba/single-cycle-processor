@@ -9,18 +9,18 @@ use work.operations.all;
 use work.alu_helper.all;
 
 entity fetch is port(
-			PCSrc_F	:	in std_logic;
-			clk	:	in std_logic;
-			reset	:	in std_logic;
-			PCBranch_F	:	in data_bus; 
-			imem_addr_F	:	out data_bus 
+			PCSrc_F, clk	:	in std_logic := '0';
+			reset		:	in std_logic := '1';
+			PCBranch_F	:	in data_bus := (others => '0'); 
+			imem_addr_F	:	out data_bus := (others => '0') 
 			);
 end entity fetch;
 
 architecture behavioural of fetch is
 	
-	signal Add_output_to_Mux_d_in0	:	data_bus;	
-	signal MUX_out_to_PC		:	data_bus;	
+	signal Add_output_to_Mux_d_in0	:	data_bus := (others => '0');	
+	signal MUX_out_to_PC		:	data_bus := (others => '0');	
+	signal PC_output		:	data_bus := (others => '0');
 	
 begin
 	PC : entity work.flopr 
@@ -28,7 +28,7 @@ begin
 		clk	=>	clk,
 		reset	=>	reset,
 		d	=>	MUX_out_to_PC,
-		q	=>	imem_addr_F
+		q	=>	PC_output	
 	);
 	MUX : entity work.mux port map(
 		d_in0	=>	Add_output_to_Mux_d_in0,
@@ -37,11 +37,12 @@ begin
 		selector=>	PCSrc_F
 	);	
 	Add : entity work.alu port map(
-		a	=>	imem_addr_F,
+		a	=>	PC_output,
 		b	=>	int_to_vec(4, data_bus'length),
 		ALUControl=>	ADD_HEX,	
 		result	=>	Add_output_to_Mux_d_in0
 	);
+	imem_addr_F <= PC_output;
 			
 	
 
