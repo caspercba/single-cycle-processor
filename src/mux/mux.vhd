@@ -4,10 +4,11 @@ library work;
 use work.operations.all;
 
 entity mux is
+	generic(datawidth : integer := 64);
 	port(
 		selector	: in	std_logic := '0';
-		d_in0, d_in1	: in	data_bus;
-		d_out		: out 	data_bus	
+		d_in0, d_in1	: in	std_logic_vector(datawidth - 1 downto 0);
+		d_out		: out 	std_logic_vector(datawidth - 1 downto 0)	
 	);
 	
 end mux;
