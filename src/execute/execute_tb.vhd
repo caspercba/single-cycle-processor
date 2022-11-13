@@ -12,53 +12,74 @@ entity execute_tb is
 end execute_tb;
 
 architecture test of execute_tb is
-	signal PCSrc_f, clk		:	std_logic := '0';
-	signal reset			:	std_logic := '1';
-	signal PCBranch_F, imem_addr_F 	:	data_bus;
 	
-	constant half_period	:	time := 5 ns;
-	constant DEC_200: data_bus := int_to_vec(200, data_bus'length);
+	signal AluSrc			:	std_logic := '0';
+	signal AluControl		:	std_logic_vector(3 downto 0) := (others => '0');
+	signal PC_E, signImm_E		:	data_bus := (others => '0');
+	signal readData1_E		:	data_bus := (others => '0');
+	signal readData2_E		:	data_bus := (others => '0');
+	signal PCBranch_E, aluResult_E	:	data_bus := (others => '0');
+	signal writeData_E		:	data_bus := (others => '0');
+	signal zero_E			:	std_logic := '0'
+	
+	constant DEC_500	:	data_bus := int_to_vec(500, data_bus'length);
+	constant DEC_400	:	data_bus := int_to_vec(400, data_bus'length);
+	constant DEC_200	:	data_bus := int_to_vec(200, data_bus'length);
+	constant DEC_100	:	data_bus := int_to_vec(100, data_bus'length);
+
+	type test_vector is record
+		AluSrc			:	std_logic;
+		AluControl		:	std_logic_vector(3 downto 0);
+		PC_E, signImm_E		:	data_bus;
+		readData1_E		:	data_bus;
+		readData2_E		:	data_bus;
+		PCBranch_E, aluResult_E	:	data_bus;
+		writeData_E		:	data_bus;
+		zero_E			:	std_logic;
+	end record test_vector;
+
+	type test_data is array (natural range <>) of test_vector;
+
+	constant tests: test_data := (
+	('0', ADD_HEX, DEC_100, DEC_100, DEC_100, DEC_200, DEC_500, DEC_200, DEC_300, '0'),
+	('1', ADD_HEX, DEC_100, DEC_100, DEC_100, DEC_200, DEC_500, DEC_200, DEC_300, '0'),
+	('0', ADD_HEX, DEC_100, DEC_100, DEC_100, DEC_200, DEC_500, DEC_200, DEC_300, '0'),
+	('0', ADD_HEX, DEC_100, DEC_100, DEC_100, DEC_200, DEC_500, DEC_200, DEC_300, '0'),
+	('0', ADD_HEX, DEC_100, DEC_100, DEC_100, DEC_200, DEC_500, DEC_200, DEC_300, '0'),
+	('0', ADD_HEX, DEC_100, DEC_100, DEC_100, DEC_200, DEC_500, DEC_200, DEC_300, '0'),
+	('0', ADD_HEX, DEC_100, DEC_100, DEC_100, DEC_200, DEC_500, DEC_200, DEC_300, '0'),
+	('0', ADD_HEX, DEC_100, DEC_100, DEC_100, DEC_200, DEC_500, DEC_200, DEC_300, '0'),
+	('0', ADD_HEX, DEC_100, DEC_100, DEC_100, DEC_200, DEC_500, DEC_200, DEC_300, '0'),
+	('0', ADD_HEX, DEC_100, DEC_100, DEC_100, DEC_200, DEC_500, DEC_200, DEC_300, '0'),
+	('0', ADD_HEX, DEC_100, DEC_100, DEC_100, DEC_200, DEC_500, DEC_200, DEC_300, '0'),
+	('0', ADD_HEX, DEC_100, DEC_100, DEC_100, DEC_200, DEC_500, DEC_200, DEC_300, '0'),
+
 	
 begin
-	dut : entity work.fetch
-	port map(PCSrc_F => PCSrc_F, clk => clk, reset => reset, PCBranch_F => PCBranch_F, imem_addr_F => imem_addr_F);
+	dut : entity work.execute
+	port map(AluSrc => AluSrc, AluControl => AluControl,
+		PC_E => PC_E, signImm_E => signImm_E,
+		readData1_E => readData1_E, readData2_E => readData2_E,
+		PCBranch_E => PCBranch_E, aluResult_E => aluResult_E,
+		writeData_E => writeData_E, zero_E => zero_E);
 
-	clk_process: process(clk)
-	begin
-		clk <= not clk after half_period;
-	end process clk_process;
-	
 	stimulus : process
-		variable clock_count: integer := 0;
-		variable last_pc	:	data_bus;
 	begin
-		wait for 10 ps;
-		if(clock_count=5) then
-			reset<='0';
-		end if;
-		if rising_edge(clk) then
+		wait for 10 ns;
+		for i in tests'range loop
+			AluSrc	<=	tests(i).AluSrc;
+			AluControl	<= tests(i).AluControl;
+			PC_E		<= tests(i).PC_E;
+			signImm_E	<= tests(i).signImm_E;
+			readData1_E	<= tests(i).readData1_E;
+			readData2_E	<= tests(i).readData2_E;
 			wait for 1 ns;
-			if clock_count < 5 then
-				checkZeroes(imem_addr_F, "fetch_tb:: Testing PC initial value is zero");
-				PCBranch_F <= DEC_200;
-				last_pc:=imem_addr_F;
-			elsif clock_count = 20 then
-				PCSrc_F <= '1';
-				last_pc := DEC_200; 
-			elsif clock_count = 21 then
-				checkEqual(DEC_200, imem_addr_F, "fetch_tb:: Check that PCBranch_F is now being used after PCSrc_F is ON");
-				PCSrc_F <= '0';
-				last_pc:=imem_addr_F;
-			elsif clock_count >= 5 then
-				checkEqual(vec_add(last_pc, 4),imem_addr_F, "fetch_tb:: Testing PC increments by +4");
-				last_pc:=imem_addr_F;
-			end if;
-
-			clock_count:=clock_count + 1;
-		end if;
-		if clock_count > 100 then
-			stop;
-		end if;
+			checkEqual(PCBranh_E, tests(i).PCBranch_E, "Testing PC Branch");
+			checkEqual(aluResult_E, tests(i).aluResult_E, "Testing PC Branch");
+			checkEqual(writeData_E, tests(i).writeData_E, "Testing PC Branch");
+			checkEqual(zero_E, tests(i).zero_E, "Testing PC Branch");
+		end loop;		
+			
 	end process;
 end architecture;
 			
