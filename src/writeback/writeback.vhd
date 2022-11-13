@@ -4,12 +4,13 @@ use ieee.numeric_std.all;
 
 library work;
 use work.logger.log;
+use work.operations.all;
 
 entity writeback is port(
 	memtoReg	:	std_logic := '0';
 	aluResult_W	:	in data_bus := (others => '0');
 	DM_readData_W	:	in data_bus := (others => '0');
-	writeDadta3_W	:	out data_bus := (others => '0')
+	writeData3_W	:	out data_bus := (others => '0')
 );
 end entity writeback;
 

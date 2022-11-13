@@ -27,7 +27,9 @@ begin
 		y	=>	signImm_D
 	);
 
-	mux : entity work.mux port map(
+	mux : entity work.mux 
+	generic map(datawidth => 5)	
+	port map(
 		selector	=>	reg2loc_D,
 		d_in0		=>	instr_D_bus(20 downto 16),
 		d_in1		=>	instr_D_bus(4 downto 0),
@@ -45,6 +47,6 @@ begin
 		rd2		=>	readData2_D
 	);	
 
-	instr_D <= instr_D_bus;
+	instr_D_bus <= instr_D;
 		
 end architecture;
