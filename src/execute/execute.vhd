@@ -9,12 +9,14 @@ use work.operations.all;
 use work.alu_helper.all;
 
 entity execute is port(
-			AluSrc						:	in std_logic := '0';
-			AluControl					:	in std_logic_vector(3 downto 0) := (others => '0');
-			PC_E, signImm_E, readData1_E, readData2_E	:	in data_bus := (others => '0');
-			PCBranch_E, aluResult_E, writeData_E		:	out data_bus := (others => '0');
-			zero_E						:	out std_logic := '0'
-		);
+		AluSrc			:	in std_logic := '0';
+		AluControl		:	in std_logic_vector(3 downto 0) := (others => '0');
+		PC_E, signImm_E		:	in data_bus := (others => '0');
+		readData1_E, readData2_E:	in data_bus := (others => '0');
+		PCBranch_E, aluResult_E	:	out data_bus := (others => '0');
+		writeData_E		:	out data_bus := (others => '0');
+		zero_E			:	out std_logic := '0'
+	);
 end entity execute;
 
 architecture behavioural of execute is
@@ -37,7 +39,7 @@ begin
 	);
 			
 	ALU : entity work.alu port map(
-		a		=>	read_Data1_E,
+		a		=>	readData1_E,
 		b		=>	MUX_to_ALU_b,
 		ALUControl	=>	AluControl,
 		result		=>	aluResult_E
