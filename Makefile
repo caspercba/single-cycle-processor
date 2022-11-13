@@ -50,32 +50,32 @@ import: clean
 fetch_tests: import
 	@$(GHDL_CMD) -m $(GHDL_FLAGS) fetch_tb
 	@$(GHDL_CMD) -r $(GHDL_FLAGS) fetch_tb --vcd=$(WORK_DIR)/fetch_tb.vcd --wave=fetch_tb.ghw --stop-time=950ns
-	#@$(GTKWAVE) fetch_tb.ghw 
+	@$(GTKWAVE) fetch_tb.ghw 
 
 mux_tests: import
 	@$(GHDL_CMD) -m $(GHDL_FLAGS) mux_tb
 	@$(GHDL_CMD) -r $(GHDL_FLAGS) mux_tb --vcd=$(WORK_DIR)/mux_tb.vcd --wave=mux_tb.ghw --stop-time=950ns
-	#@$(GTKWAVE) mux_tb.ghw 
+	@$(GTKWAVE) mux_tb.ghw 
 
 maindec_tests: import
 	@$(GHDL_CMD) -m $(GHDL_FLAGS) maindec_tb
 	@$(GHDL_CMD) -r $(GHDL_FLAGS) maindec_tb --vcd=$(WORK_DIR)/maindec_tb.vcd --wave=maindec_tb.ghw --stop-time=950ns
-	#@$(GTKWAVE) maindec_tb.ghw 
+	@$(GTKWAVE) maindec_tb.ghw 
 	
 regfile_tests: import
 	@$(GHDL_CMD) -m $(GHDL_FLAGS) regfile_tb
 	@$(GHDL_CMD) -r $(GHDL_FLAGS) regfile_tb --vcd=$(WORK_DIR)/regfile_tb.vcd --wave=regfile_tb.ghw --stop-time=950ns
-	#@$(GTKWAVE) regfile_tb.ghw 
+	@$(GTKWAVE) regfile_tb.ghw 
 
 imem_tests: import
 	@$(GHDL_CMD) -m $(GHDL_FLAGS) imem_tb
 	@$(GHDL_CMD) -r $(GHDL_FLAGS) imem_tb --vcd=$(WORK_DIR)/imem_tb.vcd --wave=imem_tb.ghw 
-	#@$(GTKWAVE) imem_tb.ghw 
+	@$(GTKWAVE) imem_tb.ghw 
 
 alu_tests: import
 	@$(GHDL_CMD) -m $(GHDL_FLAGS) alu_tb
 	@$(GHDL_CMD) -r $(GHDL_FLAGS) alu_tb --vcd=$(WORK_DIR)/alu_tb.vcd --wave=alu_tb.ghw
-	#@$(GTKWAVE) alu_tb.ghw 
+	@$(GTKWAVE) alu_tb.ghw 
 
 flopr_tests: import
 	@$(GHDL_CMD) -m $(GHDL_FLAGS) flopr_tb
