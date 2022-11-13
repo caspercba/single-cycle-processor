@@ -27,6 +27,7 @@ entity datapath is port(
 	DM_addr			:	out data_bus := (others => '0');
 	DM_writeData		:	out data_bus := (others => '0')
 );
+end entity datapath;
 
 architecture behavioural of datapath is
 	signal PCSrc_bus		: std_logic := '0';
@@ -89,7 +90,4 @@ begin
 	DM_addr <= DM_addr_bus;
 
 end architecture;
-	
-	
-
 	

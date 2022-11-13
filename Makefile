@@ -17,7 +17,7 @@ GTKWAVE=gtkwave
 
 #.PHONY: cpu_flow_uncond_branch_tests continuous_tests clean
 
-tests: signext_tests flopr_tests alu_tests imem_tests regfile_tests maindec_tests mux_tests fetch_tests execute_tests
+tests: signext_tests flopr_tests alu_tests imem_tests regfile_tests maindec_tests mux_tests fetch_tests execute_tests datapath_tests
 
 all:
 	sleep 1
@@ -34,6 +34,16 @@ import: clean
 	@$(GHDL_CMD) -i $(GHDL_FLAGS) src/mux/*.vhd
 	@$(GHDL_CMD) -i $(GHDL_FLAGS) src/fetch/*.vhd
 	@$(GHDL_CMD) -i $(GHDL_FLAGS) src/execute/*.vhd
+	@$(GHDL_CMD) -i $(GHDL_FLAGS) src/memory/*.vhd
+	@$(GHDL_CMD) -i $(GHDL_FLAGS) src/writeback/*.vhd
+	@$(GHDL_CMD) -i $(GHDL_FLAGS) src/decode/*.vhd
+	@$(GHDL_CMD) -i $(GHDL_FLAGS) src/datapath/*.vhd
+
+
+datapath_tests: import
+	@$(GHDL_CMD) -m $(GHDL_FLAGS) datapath_tb
+	@$(GHDL_CMD) -r $(GHDL_FLAGS) datapath_tb --vcd=$(WORK_DIR)/datapath_tb.vcd --wave=datapath_tb.ghw --stop-time=950ns
+	#@$(GTKWAVE) datapath_tb.ghw 
 
 execute_tests: import
 	@$(GHDL_CMD) -m $(GHDL_FLAGS) execute_tb

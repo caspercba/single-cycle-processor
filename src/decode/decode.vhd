@@ -45,6 +45,6 @@ begin
 		rd2		=>	readData2_D
 	);	
 
-	instr_D => instr_D_bus;
+	instr_D <= instr_D_bus;
 		
 end architecture;
