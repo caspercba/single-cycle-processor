@@ -16,18 +16,18 @@ architecture test of maindec_tb is
 
 	component maindec is
 		port(
-			op	: in op_type;
+			Op	: in op_type;
 			RegToLoc,ALUSrc,MemtoReg,RegWrite,MemRead,MemWrite,Branch: out std_logic;
 			ALUOp	: out alu_op_type 
 		);
 	end component maindec;
 
-	signal op	: op_type; 
+	signal Op	: op_type; 
 	signal RegToLoc, ALUSrc, MemtoReg, RegWrite, MemRead, MemWrite, Branch : std_logic := '0';
 	signal ALUOp	: alu_op_type; 
 	
 	type test_vector is record
-		op	:	op_type;
+		Op	:	op_type;
 		RegToLoc,ALUSrc,MemtoReg,RegWrite,MemRead,MemWrite,Branch: std_logic;
 		ALUOp	:	alu_op_type;
 	end record test_vector;
@@ -49,7 +49,7 @@ architecture test of maindec_tb is
 begin
 	UUT: entity work.maindec
 	port map(	
-		op	=>op,
+		Op	=>Op,
 		RegToLoc=>RegToLoc,
 		ALUSrc	=> ALUSrc,
 		MemtoReg=> MemtoReg,
@@ -64,7 +64,7 @@ begin
 	begin
 		for i in tests'range loop
 			log("maindec testcase #" & to_string(i+1) & " of " & to_string(tests'length));
-			op<=tests(i).op;
+			Op<=tests(i).Op;
 			wait for 1 ps;
 			assert RegToLoc=tests(i).RegToLoc report "RegToLoc Expected: " & to_string(tests(i).RegToLoc) & " Got: " & to_string(RegToLoc) severity error;
 			assert ALUSrc=tests(i).ALUSrc report "ALUSrc Expected: " & to_string(tests(i).ALUSrc) & " Got: " & to_string(ALUSrc) severity error;
