@@ -9,8 +9,8 @@ use work.operations.all;
 
 entity maindec is
 	port(
-	op	: in std_logic_vector(10 downto 0);
-	RegToLoc,ALUSrc,MemtoReg,RegWrite,MemRead,MemWrite,Branch: out std_logic;
+	instr	: in std_logic_vector(10 downto 0);
+	reg2loc,ALUSrc,memtoReg,regWrite,memRead,memWrite,Branch: out std_logic;
 	ALUOp	: out std_logic_vector(1 downto 0)
 );
 end entity maindec;
@@ -19,42 +19,42 @@ architecture behavioural of maindec is
 	-- signals or constants here
 begin
 
-	with op select
-	RegToLoc <= 	'0' when OP_ADD|OP_SUB|OP_AND|OP_ORR|OP_LDUR,
+	with instr select
+	reg2Loc <= 	'0' when OP_ADD|OP_SUB|OP_AND|OP_ORR|OP_LDUR,
 		    	'1' when OP_STUR|OP_CBZ_COMPAT,
 		    	'0' when others;
 	
-	with op select
+	with instr select
 	ALUSrc <= '0' when OP_ADD|OP_SUB|OP_AND|OP_ORR|OP_CBZ_COMPAT,
 		    '1' when OP_LDUR|OP_STUR,
 		    '0' when others;
 
-	with op select
-	MemToReg <= '0' when OP_ADD|OP_SUB|OP_AND|OP_ORR|OP_STUR|OP_CBZ_COMPAT,
+	with instr select
+	memtoReg <= '0' when OP_ADD|OP_SUB|OP_AND|OP_ORR|OP_STUR|OP_CBZ_COMPAT,
 		    '1' when OP_LDUR,
 		    '0' when others;
 
-	with op select
-	RegWrite <= '1' when OP_ADD|OP_SUB|OP_AND|OP_ORR|OP_LDUR,
+	with instr select
+	regWrite <= '1' when OP_ADD|OP_SUB|OP_AND|OP_ORR|OP_LDUR,
 		    '0' when OP_STUR|OP_CBZ_COMPAT,
 		    '0' when others;
 
-	with op select
-	MemRead <= '0' when OP_ADD|OP_SUB|OP_AND|OP_ORR|OP_STUR|OP_CBZ_COMPAT,
+	with instr select
+	memRead <= '0' when OP_ADD|OP_SUB|OP_AND|OP_ORR|OP_STUR|OP_CBZ_COMPAT,
 		   '1' when OP_LDUR,
 		   '0' when others;
 
-	with op select
-	MemWrite <= 	'0' when OP_ADD|OP_SUB|OP_AND|OP_ORR|OP_LDUR|OP_CBZ_COMPAT,
+	with instr select
+	memWrite <= 	'0' when OP_ADD|OP_SUB|OP_AND|OP_ORR|OP_LDUR|OP_CBZ_COMPAT,
 		   	'1' when OP_STUR,
 		   	'0' when others;
 
-	with op select
+	with instr select
 	Branch <= 	'0' when OP_ADD|OP_SUB|OP_AND|OP_ORR|OP_LDUR|OP_STUR,
 		   	'1' when OP_CBZ_COMPAT,
 		   	'0' when others;
 
-	with op select
+	with instr select
 	ALUOp <= 	"10" when OP_ADD|OP_SUB|OP_AND|OP_ORR,
 		   	"00" when OP_LDUR|OP_STUR,
 		   	"01" when OP_CBZ_COMPAT,

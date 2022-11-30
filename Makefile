@@ -17,7 +17,7 @@ GTKWAVE=gtkwave
 
 #.PHONY: cpu_flow_uncond_branch_tests continuous_tests clean
 
-tests: signext_tests flopr_tests alu_tests imem_tests regfile_tests maindec_tests mux_tests fetch_tests execute_tests datapath_tests
+tests: signext_tests flopr_tests alu_tests imem_tests regfile_tests maindec_tests mux_tests fetch_tests execute_tests datapath_tests aludec_tests controller_tests
 
 all:
 	sleep 1
@@ -38,7 +38,18 @@ import: clean
 	@$(GHDL_CMD) -i $(GHDL_FLAGS) src/writeback/*.vhd
 	@$(GHDL_CMD) -i $(GHDL_FLAGS) src/decode/*.vhd
 	@$(GHDL_CMD) -i $(GHDL_FLAGS) src/datapath/*.vhd
+	@$(GHDL_CMD) -i $(GHDL_FLAGS) src/aludec/*.vhd
+	@$(GHDL_CMD) -i $(GHDL_FLAGS) src/controller/*.vhd
 
+controller_tests: import
+	@$(GHDL_CMD) -m $(GHDL_FLAGS) controller_tb
+	@$(GHDL_CMD) -r $(GHDL_FLAGS) controller_tb --vcd=$(WORK_DIR)/controller_tb.vcd --wave=controller_tb.ghw --stop-time=950ns
+	#@$(GTKWAVE) controller_tb.ghw 
+
+aludec_tests: import
+	@$(GHDL_CMD) -m $(GHDL_FLAGS) aludec_tb
+	@$(GHDL_CMD) -r $(GHDL_FLAGS) aludec_tb --vcd=$(WORK_DIR)/aludec_tb.vcd --wave=aludec_tb.ghw --stop-time=950ns
+	#@$(GTKWAVE) aludec_tb.ghw 
 
 datapath_tests: import
 	@$(GHDL_CMD) -m $(GHDL_FLAGS) datapath_tb
@@ -63,7 +74,7 @@ mux_tests: import
 maindec_tests: import
 	@$(GHDL_CMD) -m $(GHDL_FLAGS) maindec_tb
 	@$(GHDL_CMD) -r $(GHDL_FLAGS) maindec_tb --vcd=$(WORK_DIR)/maindec_tb.vcd --wave=maindec_tb.ghw --stop-time=950ns
-	@$(GTKWAVE) maindec_tb.ghw 
+	#@$(GTKWAVE) maindec_tb.ghw 
 	
 regfile_tests: import
 	@$(GHDL_CMD) -m $(GHDL_FLAGS) regfile_tb
